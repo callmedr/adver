@@ -3,24 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>임신 예정일 계산기</title>
+    <!-- Google Fonts - Poor Story 폰트 추가 -->
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f4f4f4;
-            text-align: center;
+            font-family: 'Poor Story', sans-serif; /* Poor Story 폰트 적용 */
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMjExMTVfMjY2%2FMDAxNjY4NDc3NjA5Nzk1.FvskZGr4i5Z_v_cIJjllhkHFIv73jtRxzwjzHIdfXS8g.9430D2kGSH1Vh5o0qQSXUUClluKg0MzPujgys6E9nqAg.PNG.myks4u%2F%25C0%25CC%25C0%25AF%25C1%25D8_4_%25BA%25B9%25BB%25E7.png&type=sc960_832') no-repeat center center fixed;
+            background-size: cover;
         }
         .container {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.9); /* 반투명한 흰색 배경 */
             border-radius: 10px;
             padding: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
         }
         h1 {
-            color: #333;
+            color: #d63384;
             margin-bottom: 20px;
+            font-size: 28px;
+        }
+        .label {
+            font-size: 18px;
+            color: #d63384;
+            margin-bottom: 10px;
         }
         input {
             width: 100%;
@@ -28,31 +42,41 @@
             margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
+            font-size: 16px;
         }
         button {
-            background-color: #4CAF50;
+            background-color: #ff69b4;
             color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
             margin-top: 10px;
+            font-size: 18px;
+            font-family: 'Poor Story', sans-serif; /* 버튼 폰트도 Poor Story로 변경 */
+        }
+        button:hover {
+            background-color: #ff1493;
         }
         #result {
             margin-top: 20px;
-            background-color: #f0f0f0;
+            background-color: #fff0f5;
             padding: 15px;
             border-radius: 5px;
             text-align: left;
+            border: 1px solid #ffb6c1;
+            font-size: 16px;
         }
         h3 {
-            color: #333;
+            color: #d63384;
+            font-size: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🤰 임신 예정일 계산기</h1>
+        <div class="label">분만 예정일을 입력해 주세요^^</div>
         <input 
             type="date" 
             id="lastPeriodDate" 
@@ -63,32 +87,14 @@
     </div>
 
     <script>
-        // 날짜 포맷을 한국식으로 변환하는 함수
         function formatDate(date) {
             return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
         }
 
-        // 임신 주차별 상세 메시지
-        function getPregnancyInfo(weeks) {
-            if (weeks < 12) {
-                return "🤰 **임신 초기 (1~12주):** \n태아의 주요 기관이 형성되므로 엽산 섭취가 중요합니다.";
-            } else if (weeks < 28) {
-                return "🍼 **임신 중기 (13~27주):** \n태아의 움직임이 활발해지고 안정기에 접어듭니다. 균형 잡힌 식사를 유지하세요.";
-            } else if (weeks < 38) {
-                return "👶 **임신 후기 (28~37주):** \n출산 준비가 필요합니다. 정기 검진과 태동 체크를 잊지 마세요.";
-            } else if (weeks <= 40) {
-                return "🎉 **출산 임박 (38~40주):** \n출산 가방을 준비하고 병원에 갈 준비를 마무리하세요!";
-            } else {
-                return "🎊 **출산 예정일 초과:** \n병원에서 검진을 통해 상태를 확인하세요.";
-            }
-        }
-
-        // 임신 예정일 계산 함수
         function calculateDueDate() {
             const lastPeriodDateInput = document.getElementById('lastPeriodDate');
             const lastPeriodDate = new Date(lastPeriodDateInput.value);
 
-            // 유효성 검사
             if (isNaN(lastPeriodDate.getTime()) || lastPeriodDate > new Date()) {
                 alert('유효한 과거 날짜를 입력해주세요.');
                 return;
@@ -103,21 +109,11 @@
             const weeksPregnant = Math.floor(totalDaysPregnant / 7);
             const daysInCurrentWeek = totalDaysPregnant % 7;
 
-            const remainingDays = 280 - totalDaysPregnant;
-            const weeksRemaining = Math.floor(remainingDays / 7);
-            const daysInRemainingWeek = remainingDays % 7;
-
-            // 결과 표시
             const resultDiv = document.getElementById('result');
             resultDiv.innerHTML = `
                 <h3>계산 결과</h3>
-                <p><strong>마지막 생리 시작일:</strong> ${formatDate(lastPeriodDate)}</p>
                 <p><strong>예상 분만일:</strong> ${formatDate(estimatedDueDate)}</p>
                 <p><strong>현재 임신 주수:</strong> ${weeksPregnant}주 ${daysInCurrentWeek}일</p>
-                <p><strong>남은 임신 주수:</strong> ${weeksRemaining}주 ${daysInRemainingWeek}일</p>
-                <hr>
-                <p><strong>🔎 현재 상태:</strong></p>
-                <p>${getPregnancyInfo(weeksPregnant)}</p>
             `;
         }
     </script>
