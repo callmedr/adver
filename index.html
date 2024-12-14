@@ -43,6 +43,10 @@
             background-color: #f0f0f0;
             padding: 15px;
             border-radius: 5px;
+            text-align: left;
+        }
+        h3 {
+            color: #333;
         }
     </style>
 </head>
@@ -59,31 +63,46 @@
     </div>
 
     <script>
+        // 날짜 포맷을 한국식으로 변환하는 함수
+        function formatDate(date) {
+            return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+        }
+
+        // 임신 주차별 상세 메시지
+        function getPregnancyInfo(weeks) {
+            if (weeks < 12) {
+                return "🤰 **임신 초기 (1~12주):** \n태아의 주요 기관이 형성되므로 엽산 섭취가 중요합니다.";
+            } else if (weeks < 28) {
+                return "🍼 **임신 중기 (13~27주):** \n태아의 움직임이 활발해지고 안정기에 접어듭니다. 균형 잡힌 식사를 유지하세요.";
+            } else if (weeks < 38) {
+                return "👶 **임신 후기 (28~37주):** \n출산 준비가 필요합니다. 정기 검진과 태동 체크를 잊지 마세요.";
+            } else if (weeks <= 40) {
+                return "🎉 **출산 임박 (38~40주):** \n출산 가방을 준비하고 병원에 갈 준비를 마무리하세요!";
+            } else {
+                return "🎊 **출산 예정일 초과:** \n병원에서 검진을 통해 상태를 확인하세요.";
+            }
+        }
+
+        // 임신 예정일 계산 함수
         function calculateDueDate() {
-            // 입력된 마지막 생리 시작일 가져오기
             const lastPeriodDateInput = document.getElementById('lastPeriodDate');
             const lastPeriodDate = new Date(lastPeriodDateInput.value);
 
             // 유효성 검사
-            if (isNaN(lastPeriodDate.getTime())) {
-                alert('날짜를 선택해주세요.');
+            if (isNaN(lastPeriodDate.getTime()) || lastPeriodDate > new Date()) {
+                alert('유효한 과거 날짜를 입력해주세요.');
                 return;
             }
 
-            // 현재 날짜
             const today = new Date();
-
-            // 예상 분만일 계산 (280일 후)
             const estimatedDueDate = new Date(lastPeriodDate);
             estimatedDueDate.setDate(lastPeriodDate.getDate() + 280);
 
-            // 임신 주수 계산
             const millisecondsPerDay = 24 * 60 * 60 * 1000;
             const totalDaysPregnant = Math.floor((today - lastPeriodDate) / millisecondsPerDay);
             const weeksPregnant = Math.floor(totalDaysPregnant / 7);
             const daysInCurrentWeek = totalDaysPregnant % 7;
 
-            // 남은 임신 주수 계산
             const remainingDays = 280 - totalDaysPregnant;
             const weeksRemaining = Math.floor(remainingDays / 7);
             const daysInRemainingWeek = remainingDays % 7;
@@ -92,10 +111,13 @@
             const resultDiv = document.getElementById('result');
             resultDiv.innerHTML = `
                 <h3>계산 결과</h3>
-                <p>마지막 생리 시작일: ${lastPeriodDateInput.value}</p>
-                <p>예상 분만일: ${estimatedDueDate.toISOString().split('T')[0]}</p>
-                <p>현재 임신 주수: ${weeksPregnant}주 ${daysInCurrentWeek}일</p>
-                <p>남은 임신 주수: ${weeksRemaining}주 ${daysInRemainingWeek}일</p>
+                <p><strong>마지막 생리 시작일:</strong> ${formatDate(lastPeriodDate)}</p>
+                <p><strong>예상 분만일:</strong> ${formatDate(estimatedDueDate)}</p>
+                <p><strong>현재 임신 주수:</strong> ${weeksPregnant}주 ${daysInCurrentWeek}일</p>
+                <p><strong>남은 임신 주수:</strong> ${weeksRemaining}주 ${daysInRemainingWeek}일</p>
+                <hr>
+                <p><strong>🔎 현재 상태:</strong></p>
+                <p>${getPregnancyInfo(weeksPregnant)}</p>
             `;
         }
     </script>
