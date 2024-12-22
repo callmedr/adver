@@ -72,6 +72,15 @@
             font-size: 20px;
         }
     </style>
+        if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/adver/service-worker.js')
+    .then(() => {
+      console.log('서비스 워커 등록 성공');
+    })
+    .catch((error) => {
+      console.log('서비스 워커 등록 실패:', error);
+    });
+}
 </head>
 <body>
     <div class="container">
@@ -117,15 +126,7 @@
             `;
         }
     </script>
-    if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/adver/service-worker.js')
-    .then(() => {
-      console.log('서비스 워커 등록 성공');
-    })
-    .catch((error) => {
-      console.log('서비스 워커 등록 실패:', error);
-    });
-}
+
 
 </body>
 </html>
