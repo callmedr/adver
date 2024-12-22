@@ -1,0 +1,17 @@
+{
+    "name": "분만 예정일 계산기",
+    "short_name": "계산기",
+    "description": "분만 예정일을 계산해주는 앱",
+    "start_url": "/adver", 
+    "display": "standalone", 
+    "background_color": "#ffffff", 
+    "theme_color": "#4CAF50",
+    "icons": [
+      {
+        "src": "/icons/icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ]
+  }
+  
