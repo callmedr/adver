@@ -72,6 +72,7 @@
             font-size: 20px;
         }
     </style>
+    <script>
         if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/adver/service-worker.js')
     .then(() => {
@@ -81,6 +82,7 @@
       console.log('서비스 워커 등록 실패:', error);
     });
 }
+    </script>
 </head>
 <body>
     <div class="container">
